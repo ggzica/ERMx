@@ -1,8 +1,8 @@
-import Charts from '../models/charts.model.js'
+import Chart from '../models/charts.model.js'
 
 export const createChart = async (req, res, next) => {
     try {
-        const client = await Client.create({
+        const Chart = await Chart.create({
             ...req.body,
             createdBy: req.user._id
         })
