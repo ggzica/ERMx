@@ -1,6 +1,6 @@
-import Client from '../models/client.model.js'
+import Charts from '../models/charts.model.js'
 
-export const createClient = async (req, res, next) => {
+export const createChart = async (req, res, next) => {
     try {
         const client = await Client.create({
             ...req.body,
@@ -14,7 +14,7 @@ export const createClient = async (req, res, next) => {
     }
 }
 
-export const getAllClients = async (req, res, next) => {
+export const getClientAllCharts = async (req, res, next) => {
     try {
         const clients = await Client.find()
 
