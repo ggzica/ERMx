@@ -177,6 +177,12 @@ const AuthenticatedAppsIndexRoute = AuthenticatedAppsIndexImport.update({
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
+// const AuthenticatedAppsIndexRoute = AuthenticatedAppsIndexImport.update({
+//   id: '/clients/',
+//   path: '/clients/',
+//   getParentRoute: () => AuthenticatedRouteRoute,
+// } as any)
+
 const ClerkAuthenticatedUserManagementRoute =
   ClerkAuthenticatedUserManagementImport.update({
     id: '/user-management',

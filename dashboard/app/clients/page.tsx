@@ -1,6 +1,10 @@
+"use client"
+import { Main } from "@/components/main";
 import { columns, Payment } from "./columns";
 import { DataTable } from "./data-table";
-
+import { Button } from "@/components/ui/button";
+import { UserRoundPlus } from "lucide-react";
+import { DialogDemo} from '@/components/dialogs/client-dialog'
 const getData = async (): Promise<Payment[]> => {
     return [
         {
@@ -251,14 +255,30 @@ const getData = async (): Promise<Payment[]> => {
     ]
 };
 const page = async () => {
+
     const data = await getData()
     return (
-        <div className="">
-            <div className="mb-8 px-4 py-2 bg-secondary rounded-md">
-                <h1 className="font-semibold">All Payments</h1>
-            </div>
-            <DataTable columns={columns} data={data} />
+
+         <Main>
+        <div className='mb-2 flex flex-wrap items-center justify-between space-y-2'>
+          <div>
+            <h2 className='text-2xl font-bold tracking-tight'>Client List</h2>
+            <p className='text-muted-foreground'>
+              Manage The clients.
+            </p>
+          </div>
+            <div className='flex gap-2'>
+      <Button>
+        <span>Add Client</span> <UserRoundPlus />
+
+      </Button>
+      <DialogDemo />
+    </div>
         </div>
+        <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12'>
+          <DataTable data={data} columns={columns} />
+        </div>
+      </Main>
     )
 }
 
