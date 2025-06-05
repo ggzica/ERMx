@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { DialogCloseButton } from '@/components/dialogs/client-dialog'
 export function DialogDemo() {
   return (
     <Dialog>
