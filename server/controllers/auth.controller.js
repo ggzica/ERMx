@@ -69,7 +69,7 @@ export const signIn = async(req,res,next) =>{
             error.statusCode = 404
             throw error
         }
-        console.log('hello')
+        console.log(req.body)
 
         const token = jwt.sign({userId:user._id},JWT_SECRET,{expiresIn:JWT_EXPIRES_IN})
 
