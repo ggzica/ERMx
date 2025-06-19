@@ -1,11 +1,11 @@
 "use client";
-import { LoginForm } from "@/components/login-form";
+import { RegisterForm } from "@/components/register-form";
 import { IconLoader2, IconMedicalCross } from "@tabler/icons-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -28,7 +28,7 @@ export default function LoginPage() {
           </div>
           ERMx
         </a>
-        <LoginForm />
+        <RegisterForm />
       </div>
     </div>
   );

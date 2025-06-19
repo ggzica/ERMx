@@ -1,22 +1,22 @@
-'use client';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+"use client";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({ className, ...props }) {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -28,32 +28,32 @@ export function LoginForm({ className, ...props }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const res = await signIn('credentials', {
+    const res = await signIn("credentials", {
       redirect: false,
       email: formData.email,
       password: formData.password,
     });
 
     if (res?.ok) {
-      toast.success('logged in!');
-      router.push('/dashboard');
+      toast.success("logged in!");
+      router.push("/dashboard");
     } else {
-      toast.error('Invalid Credentials');
+      toast.error("Invalid Credentials");
     }
     setLoading(false);
   };
   return (
-    <div className={cn('flex flex-col gap-6', className)} {...props}>
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
-        <CardHeader className='text-center'>
-          <CardTitle className='text-xl'>Welcome back</CardTitle>
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Welcome back</CardTitle>
           <CardDescription>
             Please enter your credentials to continue
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin}>
-            <div className='grid gap-6'>
+            <div className="grid gap-6">
               {/* <div className='flex flex-col gap-4'> */}
               {/* <Button variant='outline' className='w-full'>
                   <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
@@ -79,45 +79,45 @@ export function LoginForm({ className, ...props }) {
                   Or continue with
                 </span>
               </div> */}
-              <div className='grid gap-6'>
-                <div className='grid gap-3'>
-                  <Label htmlFor='email'>Email</Label>
+              <div className="grid gap-6">
+                <div className="grid gap-3">
+                  <Label htmlFor="email">Email</Label>
                   <Input
-                    id='email'
-                    name='email'
+                    id="email"
+                    name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    type='email'
-                    placeholder='m@example.com'
+                    type="email"
+                    placeholder="m@example.com"
                     required
                   />
                 </div>
-                <div className='grid gap-3'>
-                  <div className='flex items-center'>
-                    <Label htmlFor='password'>Password</Label>
+                <div className="grid gap-3">
+                  <div className="flex items-center">
+                    <Label htmlFor="password">Password</Label>
                     <a
-                      href='#'
-                      className='ml-auto text-sm underline-offset-4 hover:underline'
+                      href="#"
+                      className="ml-auto text-sm underline-offset-4 hover:underline"
                     >
                       Forgot your password?
                     </a>
                   </div>
                   <Input
-                    id='password'
-                    type='password'
-                    name='password'
+                    id="password"
+                    type="password"
+                    name="password"
                     value={formData.password}
                     onChange={handleChange}
                     required
                   />
                 </div>
-                <Button type='submit' className='w-full' disabled={loading}>
-                  {loading ? 'Logging in...' : 'Login'}
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? "Logging in..." : "Login"}
                 </Button>
               </div>
-              <div className='text-center text-sm'>
-                Don&apos;t have an account?{' '}
-                <a href='#' className='underline underline-offset-4'>
+              <div className="text-center text-sm">
+                Don&apos;t have an account?{" "}
+                <a href="/register" className="underline underline-offset-4">
                   Sign up
                 </a>
               </div>
