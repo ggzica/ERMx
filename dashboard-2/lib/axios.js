@@ -4,14 +4,15 @@ import { toast } from "sonner";
 import { handleApiError } from "./handleApiError";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5500/api/",
+  baseURL: "http://localhost:5500/api",
 });
 
 axiosInstance.interceptors.request.use(async (config) => {
   const session = await getSession();
-  if (session?.user?.jwt) {
-    config.headers.Authorization = `Bearer ${session.user.jwt}`;
+  if (session?.jwt) {
+    config.headers.Authorization = `Bearer ${session.jwt}`;
   }
+
   return config;
 });
 

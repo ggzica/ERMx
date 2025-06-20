@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const clientSchema = new mongoose.Schema({
+const clientSchema = new mongoose.Schema(
+  {
     firstName: { type: String, required: [true, "First Name is required"] },
     lastName: { type: String, required: [true, "Last Name is required"] },
     dateOfBirth: { type: Date, required: [true, "Date Of Birth is required"] },
@@ -10,14 +11,18 @@ const clientSchema = new mongoose.Schema({
     insuranceNbr: { type: String, required: false },
     emailAddress: { type: String, required: false },
     phoneNbr: { type: String, required: false },
-    charts: [{
+    charts: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Chart"
-    }],
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
-}, { timestamps: true })
+        ref: "Chart",
+      },
+    ],
+    active: { type: Boolean, default: true },
 
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  },
+  { timestamps: true }
+);
 
-
-const Client = mongoose.model('Client', clientSchema)
-export default Client
+const Client = mongoose.model("Client", clientSchema);
+export default Client;

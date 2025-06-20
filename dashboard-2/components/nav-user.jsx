@@ -28,7 +28,6 @@ import { signOut } from "next-auth/react";
 
 export function NavUser({ user }) {
   const { isMobile } = useSidebar();
-  console.log(user);
   return (
     <SidebarMenu>
       <SidebarMenuItem>

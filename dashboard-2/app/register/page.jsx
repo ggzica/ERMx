@@ -13,7 +13,7 @@ export default function RegisterPage() {
     if (status === "authenticated") {
       router.push("/dashboard");
     }
-  }, [status.router]);
+  }, [status, router]);
 
   if (status === "loading")
     return (
