@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Card,
   CardAction,
@@ -6,14 +6,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { getColumns } from "./features/columns";
-import { DataTable } from "./features/data-table";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import axiosInstance from "@/lib/axios";
-import { Main } from "next/document";
-import { UserRoundPlus } from "lucide-react";
+} from '@/components/ui/card';
+import { getColumns } from './features/columns';
+import { DataTable } from './features/data-table';
+import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
+import axiosInstance from '@/lib/axios';
 
 import {
   Select,
@@ -21,11 +19,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { ChevronsLeft } from "lucide-react";
-import { ChevronLeft } from "lucide-react";
-import { ChevronRight } from "lucide-react";
-import { ChevronsRight } from "lucide-react";
+} from '@/components/ui/select';
+import { ChevronsLeft } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import { ChevronsRight } from 'lucide-react';
+import { Dialog } from '@/components/ui/dialog';
+import { NewSheet } from './features/newSheet';
+import { Sheet } from '@/components/ui/sheet';
 
 const Page = () => {
   const [clients, setClients] = useState([]);
@@ -33,7 +34,9 @@ const Page = () => {
   const [meta, setMeta] = useState(null);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [filters, setFilters] = useState({ name: "" });
+  const [filters, setFilters] = useState({ name: '' });
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -42,16 +45,17 @@ const Page = () => {
 
   const buildQuery = () => {
     const query = new URLSearchParams();
-    query.set("page", page);
-    query.set("pageSize", pageSize);
+    query.set('page', page);
+    query.set('pageSize', pageSize);
 
     if (filters.name) {
-      query.set("name", filters.name);
+      query.set('name', filters.name);
     }
 
     return query.toString();
   };
-  useEffect(() => {
+
+  const fetchData = () => {
     axiosInstance
       .get(`/clients?${buildQuery()}`)
       .then((res) => {
@@ -68,6 +72,9 @@ const Page = () => {
         console.error(err);
       })
       .finally(() => setLoading(false));
+  };
+  useEffect(() => {
+    fetchData();
   }, [page, pageSize, filters]);
 
   const handlePageSizeChange = (value) => {
@@ -77,8 +84,8 @@ const Page = () => {
 
   const columns = getColumns(filters, handleFilterChange);
   return (
-    <div className="py-4 md:py-6 px-4 lg:px-6">
-      <Card className="@container/card">
+    <div className='py-4 md:py-6 px-4 lg:px-6'>
+      <Card className='@container/card'>
         <CardHeader>
           <CardTitle>Clients</CardTitle>
           <CardDescription>
@@ -86,69 +93,86 @@ const Page = () => {
           </CardDescription>
 
           <CardAction>
-            <Button>Add a new record</Button>
+            <Button
+              onClick={() => {
+                setSheetOpen(true);
+                setSelectedItem(null);
+              }}
+            >
+              Add a new record
+            </Button>
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+              <NewSheet
+                item={selectedItem}
+                isOpen={sheetOpen}
+                onSuccess={() => {
+                  setSheetOpen(false);
+                  fetchData();
+                }}
+              />
+            </Sheet>
           </CardAction>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <p className="text-muted-foreground">Loading...</p>
+            <p className='text-muted-foreground'>Loading...</p>
           ) : (
             <DataTable columns={columns} data={clients} />
           )}
-          <div className="flex justify-between items-center mt-4 text-sm text-muted-foreground">
+          <div className='flex justify-between items-center mt-4 text-sm text-muted-foreground'>
             {meta && (
               <>
                 {clients.lenght === 0
-                  ? "No rows"
+                  ? 'No rows'
                   : `Showing ${(meta.page - 1) * meta.pageSize + 1} to ${
                       (meta.page - 1) * meta.pageSize + clients.length
                     }
                      of ${meta.total} rows`}
               </>
             )}
-            <div className="flex items-center gap-2">
+            <div className='flex items-center gap-2'>
               <Select
                 value={String(pageSize)}
                 onValueChange={handlePageSizeChange}
               >
-                <SelectTrigger className="w-[80px] h-8">
+                <SelectTrigger className='w-[80px] h-8'>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="10">10</SelectItem>
-                  <SelectItem value="25">25</SelectItem>
-                  <SelectItem value="50">50</SelectItem>
+                  <SelectItem value='10'>10</SelectItem>
+                  <SelectItem value='25'>25</SelectItem>
+                  <SelectItem value='50'>50</SelectItem>
                 </SelectContent>
               </Select>
               <span>Rows per page</span>
             </div>
-            <span className="whitespace-nowrap">
+            <span className='whitespace-nowrap'>
               Page {meta?.page} of {meta?.pageCount}
             </span>
 
-            <div className="flex gpa-1">
+            <div className='flex gpa-1'>
               <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8"
+                variant='outline'
+                size='icon'
+                className='h-8 w-8'
                 onClick={() => setPage(1)}
                 disabled={page === 1}
               >
                 <ChevronsLeft />
               </Button>
               <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8"
+                variant='outline'
+                size='icon'
+                className='h-8 w-8'
                 onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                 disabled={page === 1}
               >
                 <ChevronLeft />
               </Button>
               <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8"
+                variant='outline'
+                size='icon'
+                className='h-8 w-8'
                 onClick={() =>
                   setPage((prev) => Math.min(prev + 1, meta?.pageCount || 1))
                 }
@@ -157,9 +181,9 @@ const Page = () => {
                 <ChevronRight />
               </Button>
               <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8"
+                variant='outline'
+                size='icon'
+                className='h-8 w-8'
                 onClick={() => setPage(meta?.pageCount)}
                 disabled={page === meta?.pageCount}
               >

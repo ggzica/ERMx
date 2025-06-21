@@ -3,7 +3,7 @@ import Client from "../models/client.model.js";
 export const createClient = async (req, res, next) => {
   try {
     const client = await Client.create({
-      ...req.body,
+      ...req.body.data,
       createdBy: req.user._id,
     });
 
@@ -14,11 +14,18 @@ export const createClient = async (req, res, next) => {
 };
 
 export const getAllClients = async (req, res, next) => {
-  const { page = 1, pageSize = 10 } = req.query;
-  const queryFilters = { ...req.query };
-  const excludedFields = ["page", "pageSize"];
-  excludedFields.forEach((el) => delete queryFilters[el]);
-  console.log(queryFilters);
+  const { page = 1, pageSize = 10,name } = req.query;
+  let queryFilters = {}
+  if(name)
+  {
+    queryFilters = { "$expr": {
+    "$regexMatch": {
+      "input": { "$concat": ["$firstName", " ", "$lastName"] },
+      "regex": name,  //Your text search here
+      "options": "i"
+    }
+  }}
+  }
   try {
     const clients = await Client.find(queryFilters)
       .limit(pageSize * 1)
